@@ -6,6 +6,8 @@ using namespace std;
 static dWorldID world;
 static dSpaceID space;
 static dJointGroupID contactgroup;
+static dBodyID body1;
+static dGeomID geom1;
 
 void startPhysics()
 {
@@ -13,6 +15,18 @@ void startPhysics()
     contactgroup = dJointGroupCreate(0);
     world = dWorldCreate();
     space = dSimpleSpaceCreate(0);
+
+    dMass m;
+    dMassSetBox (&m, 1, 0.5f ,0.5f, 0.5f);
+    dMassAdjust (&m, 1);
+    
+    body1 = dBodyCreate(world);
+    dBodySetMass(body1,&m);
+    dBodySetPosition (body1, 0, 0, 1);
+
+    geom1 = dCreateBox(space, 0.5, 0.5, 0.5);
+
+    dGeomSetBody(geom1, body1);
 }
 
 void cleanupPhysics()
@@ -48,10 +62,12 @@ int main()
 {
     startPhysics();
 
-    // while (true)
-    // {
+    while (true)
+    {
         stepPhysics();
-    // }
+        const dReal* pos = dBodyGetPosition(body1);
+        cout << pos[0] << ", " << pos[1] << ", " << pos[2] << endl;
+    }
 
     cleanupPhysics();
 
