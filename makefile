@@ -2,7 +2,7 @@ CXX = g++
 CXXFLAGS = -g -Wall -std=c++0x
 
 INC=-I/usr/include -I../common -I./
-LIB=-lsfml-graphics -lsfml-system -lsfml-window -lGL -lGLU -lode -lpthread -Llib/
+LIB=-lsfml-graphics -lsfml-system -lsfml-window -lode -lpthread
 
 all: pre-build main-build
 
