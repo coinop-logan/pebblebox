@@ -21,5 +21,5 @@ pre-build:
 cpp/obj/%.o: cpp/src/%.cpp
 	$(CXX) $(CXXFLAGS) -c $^ -o $@ $(INC)
 
-bin/main: cpp/obj/main.o
+bin/main: cpp/obj/main.o cpp/obj/entities.o
 	$(CXX) $(CXXFLAGS) -o $@ $^ $(LIB)

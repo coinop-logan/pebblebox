@@ -1,13 +1,17 @@
 #include <iostream>
 #include <ode/ode.h>
+#include <vector>
+#include <boost/shared_ptr.hpp>
+
+#include "entities.h"
 
 using namespace std;
 
 static dWorldID world;
 static dSpaceID space;
 static dJointGroupID contactgroup;
-static dBodyID body1, body2;
-static dGeomID geom1, geom2;
+
+vector<boost::shared_ptr<Entity>> entities;
 
 void startPhysics()
 {
@@ -18,24 +22,7 @@ void startPhysics()
 
     // dWorldSetGravity(world, 0, 0, -9.8);
 
-    dMass m;
-    dMassSetBox (&m, 1, 0.5f ,0.5f, 0.5f);
-    dMassAdjust (&m, 1);
-    
-    body1 = dBodyCreate(world);
-    dBodySetMass(body1,&m);
-    dBodySetPosition (body1, 0, 0, 1);
-    body2 = dBodyCreate(world);
-    dBodySetMass(body2,&m);
-    dBodySetPosition (body2, 1, 0, 1);
-
-    geom1 = dCreateBox(space, 0.5, 0.5, 0.5);
-    geom2 = dCreateBox(space, 0.5, 0.5, 0.5);
-
-    dGeomSetBody(geom1, body1);
-    dGeomSetBody(geom2, body2);
-
-    dBodyAddForce(body2, -10, 0, 0);
+    // dBodyAddForce(body2, -10, 0, 0);
 }
 
 void cleanupPhysics()
@@ -72,13 +59,17 @@ int main()
 {
     startPhysics();
 
+    entities.push_back(boost::shared_ptr<SimpleBox>(new SimpleBox(world, space)));
+
     while (true)
     {
         stepPhysics();
-        const dReal* pos = dBodyGetPosition(body1);
-        cout << "1: " << pos[0] << ", " << pos[1] << ", " << pos[2] << endl;
-        pos = dBodyGetPosition(body2);
-        cout << "2: " << pos[0] << ", " << pos[1] << ", " << pos[2] << endl;
+        
+        if (entities.size() > 0)
+        {
+            const dReal* pos = dBodyGetPosition(entities[0]->body);
+            cout << "1: " << pos[0] << ", " << pos[1] << ", " << pos[2] << endl;
+        }
         cin.get();
     }
 
