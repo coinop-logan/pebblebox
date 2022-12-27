@@ -11,6 +11,7 @@ public:
     dBodyID body;
     dGeomID geom;
     Entity(tuple<dBodyID, dGeomID> bodyAndGeom);
+    virtual void dummyFunc() {}
 };
 
 class SimpleBox : public Entity
@@ -18,6 +19,7 @@ class SimpleBox : public Entity
 public:
     tuple<dBodyID, dGeomID> createBodyAndGeom(dWorldID world, dSpaceID space);
     SimpleBox(dWorldID world, dSpaceID space);
+    void dummyFunc() {}
 };
 
 #endif // ENTITIES_H

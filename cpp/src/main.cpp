@@ -2,11 +2,13 @@
 #include <ode/ode.h>
 #include <vector>
 #include <boost/shared_ptr.hpp>
+#include <SFML/Graphics.hpp>
 
+#include "graphics.h"
 #include "entities.h"
+#include "interface.h"
 
 using namespace std;
-
 
 static dWorldID world;
 
@@ -30,8 +32,6 @@ void startPhysics()
     space = dSimpleSpaceCreate(0);
 
     // dWorldSetGravity(world, 0, 0, -9.8);
-
-    // dBodyAddForce(body2, -10, 0, 0);
 
     // dBodyAddForce(body2, -10, 0, 0);
 }
@@ -91,23 +91,38 @@ void stepPhysics()
 
 int main()
 {
+    sf::RenderWindow* window = setupGraphics();
     startPhysics();
 
     entities.push_back(boost::shared_ptr<SimpleBox>(new SimpleBox(world, space)));
+    dBodyAddForce(entities[0]->body, 0.1, 0, 0);
 
     while (true)
     {
         stepPhysics();
-        
-        if (entities.size() > 0)
+
+        sf::Event event;
+        while (window->pollEvent(event))
         {
-            const dReal* pos = dBodyGetPosition(entities[0]->body);
-            cout << "1: " << pos[0] << ", " << pos[1] << ", " << pos[2] << endl;
+            auto maybeInterfaceEvent = handleEvent(event);
+            if (maybeInterfaceEvent)
+            {
+                switch (*maybeInterfaceEvent)
+                {
+                    case Quit:
+                    {
+                        window->close();
+                        break;
+                    }
+                }
+            }
         }
-        cin.get();
+        
+        display(window, entities);
     }
 
     cleanupPhysics();
+    cleanupGraphics(window);
 
     return 0;
 }
