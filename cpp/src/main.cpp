@@ -63,7 +63,6 @@ static void nearCallback(void *, dGeomID o1, dGeomID o2)
     //if there is a contact: dCollide returns the number of contacts (i.e. collisions) we need to handle.
     //Here, the third argument "1" indicates we will only ever deal with 1 collision (otherwise we'd need a for loop and an array)
     if (dCollide (o1,o2,1,&contact.geom,sizeof(dContactGeom))) {
-
         //Creates a "contact" type joint. Passes in world, joint contact group for collision, and a reference to the behavior of the contact.
         dJointID c = dJointCreateContact (world,contactGroup,&contact);
 
@@ -95,7 +94,10 @@ int main()
     startPhysics();
 
     entities.push_back(boost::shared_ptr<SimpleBox>(new SimpleBox(world, space)));
-    dBodyAddForce(entities[0]->body, 0.1, 0, 0);
+    entities.push_back(boost::shared_ptr<SimpleBox>(new SimpleBox(world, space)));
+
+    dBodyAddForce(entities[0]->body, 0.01, 0, 0);
+    dBodySetPosition(entities[1]->body, 1, 0, 0);
 
     while (true)
     {

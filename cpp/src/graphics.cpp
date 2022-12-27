@@ -29,7 +29,7 @@ void display(sf::RenderWindow* window, vector<boost::shared_ptr<Entity>> entitie
 
     // Set the camera position
     glLoadIdentity();
-    gluLookAt(0.0f, 0.0f, 3.0f,  // Eye position
+    gluLookAt(0.0f, 0.0f, -10.0f,  // Eye position
                 0.0f, 0.0f, 0.0f,  // Look at position
                 0.0f, 1.0f, 0.0f); // Up vector
     

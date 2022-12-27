@@ -14,7 +14,7 @@ tuple<dBodyID, dGeomID> SimpleBox::createBodyAndGeom(dWorldID world, dSpaceID sp
     
     dBodyID generatedBody = dBodyCreate(world);
     dBodySetMass(generatedBody, &m);
-    dBodySetPosition (generatedBody, 0, 0, 1);
+    dBodySetPosition(generatedBody, 0, 0, 0);
 
     dGeomID generatedGeom = dCreateBox(space, 0.5, 0.5, 0.5);
 
